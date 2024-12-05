@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả hình ảnh</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles_result_images.css') }}">
+
+</head>
+<body>
+    <h1>Định danh bằng hình ảnh</h1>
+    <div>
+        <img src="{{ url_for('static', filename='results/' ~ filename) }}" alt="Detected Image">
+    </div>
+    <a href="/">Trở về trang chủ</a>
+</body>
+</html>
