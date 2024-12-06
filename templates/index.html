@@ -5,24 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Định Danh</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles_index.css') }}">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Định Danh Đối Tượng</h1>
+    <div class="container">
+        <h1>Định Danh Đối Tượng</h1>
 
-    <!-- Tải video -->
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="video/*" required>
-        <input type="submit" value="Tải Video">
-    </form>
+        <!-- Tải video -->
+        <form id="uploadVideoForm" action="/upload_video" method="post" enctype="multipart/form-data">
+            <div class="file-upload">
+                <button class="file-upload-btn" type="button" onclick="$('#uploadVideoInput').trigger('click')">Tải Video</button>
+                <input id="uploadVideoInput" class="file-upload-input" type="file" name="file" accept="video/*" required style="display: none;" onchange="previewVideo()">
+                <div class="drag-text">
+                    <h3>Bấm vào tải video</h3>
+                </div>
+                <div class="file-upload-content" style="display: none;" id="videoUploadContent">
+                    <video id="videoPreview" controls style="max-width: 100%; margin-top: 20px;"></video>
+                    <div class="image-title-wrap">
+                        <button type="button" onclick="removeVideo()" class="remove-image">Xóa Video</button>
+                    </div>
+                </div>
+                <input type="submit" value="Gửi Video">
+            </div>
+        </form>
 
-    <!-- Tải ảnh  -->
-    <form id="uploadImageForm" action="/upload_image" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <input type="submit" value="Tải ảnh">
-    </form>
+        <!-- Tải ảnh -->
+        <form id="uploadImageForm" action="/upload_image" method="post" enctype="multipart/form-data">
+            <div class="file-upload">
+                <button class="file-upload-btn" type="button" onclick="$('#uploadImageInput').trigger('click')">Tải Ảnh</button>
+                <input id="uploadImageInput" class="file-upload-input" type="file" name="file" accept="image/*" required style="display: none;" onchange="previewImage()">
+                <div class="drag-text">
+                    <h3>Bấm vào tải ảnh</h3>
+                </div>
+                <div class="file-upload-content" style="display: none;">
+                    <img class="file-upload-image" src="#" alt="Ảnh đã chọn" style="max-width: 100%; height: auto;">
+                    <div class="image-title-wrap">
+                        <button type="button" onclick="removeUpload()" class="remove-image">Xóa <span class="image-title">ảnh đã tải</span></button>
+                    </div>
+                </div>
+                <input type="submit" value="Gửi Ảnh">
+            </div>
+        </form>
+    </div>
 
-    <!-- Khởi động Webcam -->
-    <a id="startWebcam" href="/start_webcam">Khởi động Webcam</a>
+    <!-- Link đến file JavaScript -->
+    <script src="{{ url_for('static', filename='js/upload_script.js') }}"></script>
+    <script>
+        // Hiển thị video trước khi tải lên
+        function previewVideo() {
+            var videoInput = document.getElementById('uploadVideoInput');
+            var videoFile = videoInput.files[0];
+            var videoURL = URL.createObjectURL(videoFile);
+            var videoPreview = document.getElementById('videoPreview');
+            var videoUploadContent = document.getElementById('videoUploadContent');
+
+            videoPreview.src = videoURL;
+            videoUploadContent.style.display = 'block';
+        }
+
+        // Xóa video đã tải lên
+        function removeVideo() {
+            var videoInput = document.getElementById('uploadVideoInput');
+            var videoPreview = document.getElementById('videoPreview');
+            var videoUploadContent = document.getElementById('videoUploadContent');
+
+            videoInput.value = '';
+            videoPreview.src = '';
+            videoUploadContent.style.display = 'none';
+        }
+
+        // Hiển thị ảnh trước khi tải lên (giống như video)
+        function previewImage() {
+            var imageInput = document.getElementById('uploadImageInput');
+            var imageFile = imageInput.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imagePreview = document.querySelector('.file-upload-image');
+                var imageUploadContent = document.querySelector('.file-upload-content');
+
+                imagePreview.src = e.target.result;
+                imageUploadContent.style.display = 'block';
+            }
+
+            reader.readAsDataURL(imageFile);
+        }
+
+        // Xóa ảnh đã tải lên
+        function removeUpload() {
+            var imageInput = document.getElementById('uploadImageInput');
+            var imagePreview = document.querySelector('.file-upload-image');
+            var imageUploadContent = document.querySelector('.file-upload-content');
+
+            imageInput.value = '';
+            imagePreview.src = '';
+            imageUploadContent.style.display = 'none';
+        }
+    </script>
 </body>
 </html>

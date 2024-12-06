@@ -3,17 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kết quả Video</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/styles_result_video.css') }}">
+    <title>Kết quả định danh bằng Video</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        img {
+            width: 1020px; /* Set video feed width */
+            height: 600px; /* Set video feed height */
+            border: 2px solid #ccc; /* Optional border */
+            border-radius: 8px; /* Optional rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow */
+        }
+        a {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Kết quả Video đã xử lý</h1>
+    <h1>Đinh danh bằng Video</h1>
     <div>
-        <video controls width="1020" height="600">
-            <source src="{{ url_for('static', filename='results/' + filename) }}" type="video/mp4">
-            Trình duyệt của bạn không hỗ trợ thẻ video.
-        </video>        
+        <img src="{{ url_for('video_feed', filename=filename) }}" />
     </div>
-    <a href="/">Trở về trang chủ</a>
+    <a href="/">Trở lại trang chủ</a>
 </body>
 </html>
